@@ -1,0 +1,73 @@
+{
+  "name": "SEO para Joyerías",
+  "short_name": "Joyería SEO",
+  "description": "Aumenta tus ventas con nuestro servicio de SEO especializado para joyerías. Más clientes, más visibilidad, más ventas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot1.webp",
+      "sizes": "1080x1920",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Página de inicio de SEO para Joyerías"
+    },
+    {
+      "src": "/images/screenshot2.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "SEO para Joyerías en escritorio"
+    }
+  ],
+  "categories": ["business", "seo", "jewelry", "marketing"],
+  "shortcuts": [
+    {
+      "name": "Solicitar Análisis SEO Gratis",
+      "short_name": "Análisis SEO",
+      "description": "Solicita tu análisis SEO gratuito para tu joyería",
+      "url": "/#contacto",
+      "icons": [{"src": "/images/icon-analysis.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Servicios SEO",
+      "short_name": "Servicios",
+      "description": "Conoce nuestros servicios de SEO para joyerías",
+      "url": "/#servicios"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://joyerias-seo.com/manifest.json"
+    }
+  ],
+  "prefer_related_applications": false,
+  "splash_pages": null
+}

@@ -1,0 +1,157 @@
+---
+// src/components/landing/ProblemSection.astro
+import Button from '../ui/Button.astro';
+
+interface ProblemItem {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  problems?: ProblemItem[];
+  ctaText?: string;
+}
+
+const {
+  title = '¿Reconoce alguno de estos problemas en su joyería?',
+  subtitle = 'No está solo. Muchas joyerías luchan con los mismos desafíos en el mundo digital actual.',
+  problems = [
+    {
+      title: 'Baja visibilidad en línea',
+      description: 'Su joyería no aparece en las primeras páginas de búsqueda, por lo que los clientes potenciales no pueden encontrarla.',
+      icon: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+    },
+    {
+      title: 'Competencia feroz',
+      description: 'Otras joyerías con menor experiencia aparecen antes que usted en los resultados de búsqueda.',
+      icon: 'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z',
+    },
+    {
+      title: 'Poco tráfico cualificado',
+      description: 'Recibe visitas, pero pocas se convierten en clientes reales.',
+      icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+    },
+    {
+      title: 'Falta de tiempo',
+      description: 'No tiene el tiempo ni el conocimiento para manejar el marketing digital efectivamente.',
+      icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+    },
+  ],
+  ctaText = 'Descubra cómo podemos ayudarle',
+} = Astro.props;
+---
+
+<section id="problemas" class="py-16 bg-gray-50 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        {title}
+      </h2>
+      <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+        {subtitle}
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
+        {problems.map((problem, index) => (
+          <div 
+            key={index}
+            class="bg-white overflow-hidden shadow rounded-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+          >
+            <div class="px-6 py-8 sm:p-10">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-md bg-primary/10 text-primary">
+                  <svg 
+                    class="h-6 w-6" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      stroke-width="2" 
+                      d={problem.icon} 
+                    />
+                  </svg>
+                </div>
+                <h3 class="ml-4 text-xl leading-6 font-medium text-gray-900">
+                  {problem.title}
+                </h3>
+              </div>
+              <p class="mt-4 text-base text-gray-500">
+                {problem.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <Button 
+        href="#solucion" 
+        variant="primary" 
+        size="lg"
+        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+      >
+        {ctaText}
+        <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animación para las tarjetas */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Aplicar animación con retraso escalonado */
+  .problem-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .problem-card:nth-child(1) { animation-delay: 0.1s; }
+  .problem-card:nth-child(2) { animation-delay: 0.2s; }
+  .problem-card:nth-child(3) { animation-delay: 0.3s; }
+  .problem-card:nth-child(4) { animation-delay: 0.4s; }
+  
+  /* Efecto hover para los iconos */
+  .problem-icon {
+    transition: all 0.3s ease;
+  }
+  
+  .problem-card:hover .problem-icon {
+    transform: scale(1.1);
+  }
+  
+  /* Mejoras de accesibilidad para el foco */
+  .problem-card:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  /* Ajustes para dispositivos móviles */
+  @media (max-width: 640px) {
+    .problem-card {
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>

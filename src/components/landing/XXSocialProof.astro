@@ -1,0 +1,440 @@
+---
+// src/components/landing/SocialProof.astro
+// Importar componente de botón
+import Button from '../ui/Button.astro';
+
+const {
+  title = 'Joyeros que multiplicaron sus ventas con nuestro SEO',
+  subtitle = 'No se fíe de nuestra palabra. Esto es lo que dicen los dueños de joyerías que ya trabajan con nosotros:',
+  testimonials = [
+    {
+      id: 1,
+      quote: 'En solo 4 meses, pasamos de 3 a 27 clientes mensuales que nos encontraron en Google buscando "joyería fina en Barcelona". La inversión se pagó sola en el primer mes con solo 2 ventas.',
+      author: 'Elena Ramírez',
+      role: 'Propietaria',
+      company: 'Joyería Ramírez & Hijos',
+      result: '27 clientes/mes',
+      time: '4 meses',
+      image: '/images/testimonials/testimonial-1.jpg',
+      rating: 5,
+    },
+    {
+      id: 2,
+      quote: 'Nuestras ventas online aumentaron un 218% en 6 meses. Ahora aparecemos en la primera página para términos como "anillos de compromiso personalizados Madrid" y generamos más de 50 consultas cualificadas al mes.',
+      author: 'Carlos Mendoza',
+      role: 'CEO',
+      company: 'Diamantes Mendoza',
+      result: '+218% ventas',
+      time: '6 meses',
+      image: '/images/testimonials/testimonial-2.jpg',
+      rating: 5,
+    },
+    {
+      id: 3,
+      quote: 'De gastar miles en anuncios que no funcionaban a tener una estrategia SEO que nos trae 15-20 clientes nuevos por semana. Lo mejor es que son clientes que ya están buscando exactamente lo que ofrecemos.',
+      author: 'Sofía Vázquez',
+      role: 'Directora',
+      company: 'Oro de Ley',
+      result: '15-20 clientes/semana',
+      time: '5 meses',
+      image: '/images/testimonials/testimonial-3.jpg',
+      rating: 5,
+    },
+    {
+      id: 4,
+      quote: 'Increíble. En 90 días nuestro tráfico orgánico creció un 340% y cerramos ventas por valor de 47.000€ directamente atribuibles al SEO. El ROI ha sido de más de 1.200%',
+      author: 'Miguel Ángel Torres',
+      role: 'Fundador',
+      company: 'Plata & Más',
+      result: '47.000€ en ventas',
+      time: '3 meses',
+      image: '/images/testimonials/testimonial-4.jpg',
+      rating: 5,
+    },
+  ],
+  ctaText = 'Quiero resultados similares',
+  ctaLink = '#contacto',
+} = Astro.props;
+
+// Función para renderizar estrellas de valoración con JSX puro
+const renderStars = (rating) => {
+  return Array(5).fill(0).map((_, i) => {
+    const starClass = i < rating ? 'text-yellow-400' : 'text-gray-300';
+    
+    // Devuelve el elemento SVG directamente como JSX
+    return (
+      <svg
+        class={`h-5 w-5 ${starClass}`}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
+    );
+  });
+};
+---
+
+<section id="testimonios" class="bg-gray-50 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        {title}
+      </h2>
+      <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+        {subtitle}
+      </p>
+    </div>
+
+    <div class="mt-16">
+      <div class="relative">
+        {/* Contenedor del slider */}
+        <div 
+          class="testimonial-slider grid gap-8 md:grid-cols-2 lg:grid-cols-4" 
+          role="region" 
+          aria-label="Testimonios de clientes"
+        >
+          {testimonials.map((testimonial) => (
+            <div 
+              id={`testimonial-${testimonial.id}`}
+              data-testimonial-id={testimonial.id}
+              class="testimonial-card bg-white p-6 rounded-xl shadow-lg h-full flex flex-col border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+              tabindex="0"
+              role="group"
+              aria-label={`Testimonio de ${testimonial.author}`}
+            >
+              <div class="flex-1">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center">
+                    {renderStars(testimonial.rating)}
+                    <span class="ml-2 text-sm text-gray-500">({testimonial.rating}.0/5.0)</span>
+                  </div>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <svg class="-ml-1 mr-1.5 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8">
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Verificado
+                  </span>
+                </div>
+                <blockquote class="mt-4">
+                  <p class="text-base text-gray-700 leading-relaxed">"{testimonial.quote}"</p>
+                </blockquote>
+                <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-blue-100 p-2 rounded-md">
+                      <svg class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                      </svg>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm font-medium text-gray-900">Resultado: {testimonial.result}</p>
+                      <p class="text-xs text-gray-500">Tiempo: {testimonial.time}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-gray-100 flex items-center">
+                <div class="flex-shrink-0">
+                  <img class="h-12 w-12 rounded-full border-2 border-yellow-400 p-0.5" src={testimonial.image} alt={testimonial.author} />
+                </div>
+                <div class="ml-4">
+                  <p class="text-base font-bold text-gray-900">{testimonial.author}</p>
+                  <p class="text-sm text-gray-600">{testimonial.role}, {testimonial.company}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Controles de navegación para móviles */}
+        <div class="md:hidden flex justify-between mt-6">
+          <button 
+            class="testimonial-prev bg-white p-2 rounded-full shadow-md text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            aria-label="Testimonio anterior"
+          >
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            class="testimonial-next bg-white p-2 rounded-full shadow-md text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            aria-label="Siguiente testimonio"
+          >
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-12 text-center bg-white p-6 rounded-xl shadow-inner border border-gray-200 max-w-2xl mx-auto">
+      <p class="text-lg font-medium text-gray-800 mb-4">¿Listo para transformar su joyería con una estrategia probada?</p>
+      <a 
+        href={ctaLink} 
+        class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold rounded-full text-white bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+      >
+        {ctaText} →
+      </a>
+      <p class="mt-3 text-sm text-gray-500">Únase a más de 200 joyerías que ya están en la primera página de Google</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Estilos para el slider */
+  .testimonial-slider {
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .testimonial-slider::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .testimonial-card {
+    scroll-snap-align: start;
+    flex: 0 0 85%;
+    min-width: 0;
+  }
+  
+  /* Estilos para pantallas medianas y grandes */
+  @media (min-width: 768px) {
+    .testimonial-slider {
+      display: grid;
+      overflow: visible;
+      padding-bottom: 0;
+    }
+    
+    .testimonial-card {
+      width: 100%;
+    }
+  }
+  
+  /* Efecto de hover para tarjetas */
+  .testimonial-card {
+    transition: all 0.3s ease;
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  /* Mejoras de accesibilidad para el foco */
+  .testimonial-card:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  /* Animación para la aparición de los testimonios */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .testimonial-card {
+    animation: fadeIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
+  .testimonial-card:nth-child(2) { animation-delay: 0.2s; }
+  .testimonial-card:nth-child(3) { animation-delay: 0.3s; }
+  .testimonial-card:nth-child(4) { animation-delay: 0.4s; }
+</style>
+
+<script>
+  // Inicialización del slider de testimonios
+  document.addEventListener('DOMContentLoaded', () => {
+    // Verificar si estamos en un entorno de navegador
+    if (typeof window === 'undefined') return;
+    
+    // Obtener elementos del DOM
+    const slider = document.querySelector('.testimonial-slider');
+    if (!slider) return;
+    
+    const sliderEl = /** @type {HTMLElement} */ (slider);
+    const sliderContainer = slider.parentElement;
+    const prevButton = document.querySelector('.testimonial-prev');
+    const nextButton = document.querySelector('.testimonial-next');
+    const cards = document.querySelectorAll('.testimonial-card');
+    let currentIndex = 0;
+    const cardCount = cards.length;
+    let cardWidth = 0;
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationId = 0;
+
+    // Función para actualizar el ancho de las tarjetas
+    const updateCardWidth = () => {
+      if (cards.length > 0 && window.innerWidth < 768) {
+        // Calcular el ancho basado en el contenedor
+        const containerEl = sliderContainer;
+        const containerWidth = containerEl ? containerEl.offsetWidth : window.innerWidth * 0.9;
+        cardWidth = containerWidth * 0.85; // 85% del ancho del contenedor
+        
+        // Aplicar estilos a las tarjetas
+        cards.forEach(card => {
+          // Usar setAttribute para evitar problemas con la propiedad style
+          card.setAttribute('style', `min-width: ${cardWidth}px;`);
+        });
+        
+        // Actualizar posición
+        updateSliderPosition();
+      }
+    };
+
+    // Función para actualizar la posición del slider
+    const updateSliderPosition = () => {
+      const offset = -currentIndex * (cardWidth + 24); // 24px de gap
+      // Usar setAttribute para evitar problemas con la propiedad style
+      sliderEl.setAttribute('style', `transform: translateX(${offset}px);`);
+    };
+
+    // Función para navegar a una diapositiva específica
+    const goToSlide = (index) => {
+      if (index < 0) {
+        currentIndex = cardCount - 1;
+      } else if (index >= cardCount) {
+        currentIndex = 0;
+      } else {
+        currentIndex = index;
+      }
+      
+      updateSliderPosition();
+      updateAriaLabels();
+    };
+
+    // Función para actualizar etiquetas ARIA
+    const updateAriaLabels = () => {
+      cards.forEach((card, index) => {
+        const isActive = index === currentIndex;
+        
+        // Configurar atributos ARIA
+        card.setAttribute('aria-hidden', String(!isActive));
+        card.setAttribute('tabindex', isActive ? '0' : '-1');
+        
+        // Enfocar la tarjeta activa para mejor accesibilidad
+        if (isActive) {
+          try {
+            // Usar requestAnimationFrame para evitar errores de sincronización
+            requestAnimationFrame(() => {
+              if (document.activeElement !== card) {
+                // Usar focus() con una verificación de tipo para TypeScript
+                if (card instanceof HTMLElement) {
+                  card.focus();
+                }
+              }
+            });
+          } catch (error) {
+            console.error('Error al enfocar la tarjeta:', error);
+          }
+        }
+
+        // Actualizar el nivel de encabezado para lectores de pantalla
+        const cardTitle = card.querySelector('h4');
+        if (cardTitle) {
+          cardTitle.setAttribute('aria-level', isActive ? '2' : '3');
+        }
+      });
+      
+      // Actualizar controles de navegación
+      if (prevButton) {
+        prevButton.setAttribute('aria-label', 'Testimonio anterior');
+        prevButton.setAttribute('aria-controls', `testimonial-${currentIndex}`);
+      }
+      
+      if (nextButton) {
+        nextButton.setAttribute('aria-label', 'Siguiente testimonio');
+        nextButton.setAttribute('aria-controls', `testimonial-${currentIndex}`);
+      }
+    };
+
+    // Inicializar solo en móviles
+    if (window.innerWidth < 768) {
+      // Configurar estilos iniciales
+      sliderEl.style.display = 'flex';
+      sliderEl.style.transition = 'transform 0.3s ease-in-out';
+      sliderEl.style.gap = '24px';
+      
+      // Configurar navegación con botones
+      if (prevButton && nextButton) {
+        prevButton.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
+      }
+      
+      // Configurar navegación táctil
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      /** @param {TouchEvent} e */
+      const handleTouchStart = (e) => {
+        touchStartX = e.touches[0].clientX;
+      };
+      
+      /** @param {TouchEvent} e */
+      const handleTouchEnd = (e) => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          touchEndX = e.changedTouches[0].clientX;
+          handleSwipe();
+        }
+      };
+      
+      const handleSwipe = () => {
+        const swipeThreshold = 50; // Mínimo de píxeles para considerar un deslizamiento
+        const swipeDistance = touchEndX - touchStartX;
+        
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+          if (swipeDistance > 0) {
+            // Deslizamiento a la derecha - tarjeta anterior
+            goToSlide(currentIndex - 1);
+          } else {
+            // Deslizamiento a la izquierda - siguiente tarjeta
+            goToSlide(currentIndex + 1);
+          }
+        }
+      };
+      
+      // Agregar event listeners táctiles
+      sliderEl.addEventListener('touchstart', handleTouchStart, { passive: true });
+      sliderEl.addEventListener('touchend', handleTouchEnd, { passive: true });
+      
+      // Actualizar en redimensionamiento
+      const handleResize = () => {
+        updateCardWidth();
+        updateSliderPosition();
+      };
+      
+      window.addEventListener('resize', handleResize, { passive: true });
+      
+      // Mejorar la accesibilidad para lectores de pantalla
+      sliderEl.setAttribute('role', 'list');
+      cards.forEach((card, index) => {
+        card.setAttribute('role', 'listitem');
+        card.setAttribute('aria-labelledby', `testimonial-${index}`);
+      });
+      
+      // Inicializar
+      updateCardWidth();
+      updateAriaLabels();
+      
+      // Limpieza al desmontar
+      return () => {
+        sliderEl.removeEventListener('touchstart', handleTouchStart);
+        sliderEl.removeEventListener('touchend', handleTouchEnd);
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  });
+</script>

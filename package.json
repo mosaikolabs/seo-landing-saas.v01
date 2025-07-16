@@ -1,0 +1,63 @@
+{
+  "name": "seo-jewelers-landing",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Landing page de servicios SEO para joyerías - International Pathfinders LLC",
+  "author": "International Pathfinders LLC",
+  "license": "ISC",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build && npm run optimize-images",
+    "preview": "astro preview",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "check": "astro check",
+    "optimize-images": "node scripts/optimize-images.js",
+    "optimize-images:watch": "nodemon --watch public/images --ext jpg,jpeg,png,gif,webp --exec \"npm run optimize-images\"",
+    "analyze": "ANALYZE=true astro build"
+  },
+  "dependencies": {
+    "astro": "^4.4.15",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.5.2",
+    "@astrojs/sitemap": "^3.4.1",
+    "@astrojs/tailwind": "^6.0.2",
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^20.8.10",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "astro-compress": "^2.3.8",
+    "autoprefixer": "^10.4.16",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-astro": "^0.29.0",
+    "fast-glob": "^3.3.1",
+    "glob": "^10.3.3",
+    "imagemin": "^8.0.1",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "imagemin-svgo": "^11.0.0",
+    "imagemin-webp": "^7.0.0",
+    "nodemon": "^3.0.1",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "prettier-plugin-astro": "^0.12.0",
+    "rollup-plugin-visualizer": "^6.0.3",
+    "sharp": "^0.33.2",
+    "vite-plugin-image-optimizer": "^2.0.1"
+  },
+  "browserslist": {
+    "defaults": [
+      "last 2 versions",
+      "not dead",
+      "not < 0.2%"
+    ]
+  }
+}

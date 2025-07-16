@@ -1,0 +1,25 @@
+# Configuración de robots.txt para SEO para Joyerías
+# https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://joyerias-seo.com/sitemap-index.xml
+
+# Deshabilitar archivos específicos
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Configuración específica para motores de búsqueda
+User-agent: Googlebot
+Allow: /*.css$
+Allow: /*.js$
+
+# Velocidad de rastreo (opcional)
+# El valor por defecto de Google es 1.0
+# Se puede ajustar según las necesidades del sitio
+# User-agent: Googlebot
+# Crawl-delay: 1.0

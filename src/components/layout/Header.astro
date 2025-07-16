@@ -1,0 +1,322 @@
+---
+// src/components/layout/Header.astro
+import Button from '../ui/Button.astro';
+import Modal from '../ui/Modal.astro';
+
+const navigation = [
+  { name: 'Inicio', href: '#inicio' },
+  { name: 'El Problema', href: '#problemas' },
+  { name: 'Nuestra Solución', href: '#solucion' },
+  { name: 'Opinión de Clientes', href: '#testimonios' },
+  { name: 'Garantía', href: '#garantia' },
+  { name: 'Contacto', href: '#contacto' },
+];
+---
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <nav class="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Navegación principal">
+    <div class="flex justify-between items-center h-16 md:h-20">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="flex items-center">
+          <span class="text-2xl font-bold text-primary">SEO</span>
+          <span class="text-2xl font-bold text-secondary ml-1">Joyerías</span>
+        </a>
+      </div>
+
+      <!-- Menú de navegación (desktop) -->
+      <div class="hidden md:ml-10 md:flex md:space-x-8">
+        {navigation.map((item) => (
+          <a 
+            href={item.href} 
+            class="text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200"
+            data-nav-link
+          >
+            {item.name}
+          </a>
+        ))}
+      </div>
+
+      <!-- Botón CTA y menú móvil -->
+      <div class="flex items-center">
+        <div class="hidden md:block md:ml-4">
+          <Button 
+            variant="primary" 
+            size="md" 
+            id="cta-nav"
+            class="open-popup" 
+            data-popup="analisis-seo"
+          >
+            Solicitar Análisis Gratis
+          </Button>
+        </div>
+        
+        <!-- Botón menú móvil -->
+        <button 
+          type="button" 
+          class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+          aria-label="Menú principal"
+          id="mobile-menu-button"
+        >
+          <span class="sr-only">Abrir menú principal</span>
+          <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Menú móvil -->
+  <div class="md:hidden hidden" id="mobile-menu">
+    <div class="pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+      {navigation.map((item) => (
+        <a 
+          href={item.href} 
+          class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50"
+          data-nav-link
+        >
+          {item.name}
+        </a>
+      ))}
+      <div class="px-5 py-3">
+        <Button variant="primary" size="md" fullWidth href="#contacto">
+          Solicitar Análisis Gratis
+        </Button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de Análisis SEO -->
+  <Modal 
+    id="analisis-seo-modal"
+    title="Solicitar Análisis SEO Gratis"
+    description="Complete el formulario para recibir un análisis detallado de su sitio web."
+    size="lg"
+  >
+    <div slot="footer" class="text-center text-sm text-gray-500">
+      <p>Recibirá su análisis en un plazo máximo de 48 horas hábiles.</p>
+    </div>
+  </Modal>
+</header>
+
+<script>
+  // Función para hacer scroll suave a un elemento
+  function scrollToElement(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80, // Ajuste para el header fijo
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  // Funcionalidad para el modal
+  document.addEventListener('DOMContentLoaded', () => {
+    // Elementos del modal
+    const modal = document.getElementById('analisis-seo-modal');
+    const modalOverlay = modal?.querySelector('[data-modal-overlay]');
+    const closeButtons = modal?.querySelectorAll('[data-modal-close]');
+    const openButtons = document.querySelectorAll('.open-popup');
+
+    // Función para abrir el modal
+    function openModal() {
+      if (!modal) return;
+      
+      // Mostrar el modal
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+      
+      // Enfocar el primer elemento interactivo del modal
+      const focusable = modal.querySelector('input, button, [tabindex]');
+      if (focusable) focusable.focus();
+      
+      // Agregar evento para cerrar con Escape
+      document.addEventListener('keydown', handleEscape);
+    }
+    
+    // Función para cerrar el modal
+    function closeModal() {
+      if (!modal) return;
+      
+      // Ocultar el modal
+      modal.classList.add('hidden');
+      document.body.style.overflow = ''; // Restaurar scroll del body
+      
+      // Remover evento de teclado
+      document.removeEventListener('keydown', handleEscape);
+    }
+    
+    // Manejador para la tecla Escape
+    function handleEscape(event) {
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    }
+    
+    // Event listeners para abrir el modal
+    openButtons?.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      });
+    });
+    
+    // Event listeners para cerrar el modal
+    closeButtons?.forEach(button => {
+      button.addEventListener('click', closeModal);
+    });
+    
+    // Cerrar al hacer clic fuera del contenido del modal
+    modalOverlay?.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+    
+    // Cerrar el modal al enviar el formulario
+    const form = modal?.querySelector('form');
+    form?.addEventListener('submit', () => {
+      // Cerrar el modal después de un pequeño retraso para dar feedback visual
+      setTimeout(closeModal, 500);
+    });
+  });
+
+  // Menú móvil y navegación
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    // Manejar clic en botón de menú móvil
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+        mobileMenu.classList.toggle('hidden');
+        
+        // Cambiar el icono
+        const icon = mobileMenuButton.querySelector('svg');
+        if (icon) {
+          if (!isExpanded) {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+          } else {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+          }
+        }
+      });
+    }
+    
+    // Manejar clics en enlaces de navegación
+    document.querySelectorAll('[data-nav-link]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        
+        // Si es un enlace de sección (#id)
+        if (href.startsWith('#')) {
+          const sectionId = href.substring(1); // Eliminar el #
+          scrollToElement(sectionId);
+        }
+        
+        // Cerrar menú móvil si está abierto
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          if (mobileMenuButton) {
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            const icon = mobileMenuButton.querySelector('svg');
+            if (icon) {
+              icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+            }
+          }
+        }
+      });
+    });
+    
+    // Actualizar clase activa al hacer scroll
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.scrollY + 100; // Ajuste para el header fijo
+      
+      document.querySelectorAll('section[id]').forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          // Actualizar enlace activo
+          document.querySelectorAll('[data-nav-link]').forEach(link => {
+            if (link.getAttribute('href') === `#${sectionId}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Estilos específicos del header */
+  header {
+    transition: all 0.3s ease;
+  }
+  
+  /* Estilos para scroll suave */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Estilos para enlaces activos */
+  [data-nav-link] {
+    position: relative;
+  }
+  
+  [data-nav-link]::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #2563eb;
+    transition: width 0.3s ease;
+  }
+  
+  [data-nav-link]:hover::after,
+  [data-nav-link].active::after {
+    width: 100%;
+  }
+  
+  header.scrolled {
+    @apply shadow-md;
+  }
+  
+  /* Animación suave para los enlaces de navegación */
+  [data-nav-link] {
+    position: relative;
+  }
+  
+  [data-nav-link]:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #D4AF37;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  [data-nav-link]:hover:after {
+    width: 70%;
+  }
+  
+  @media (max-width: 768px) {
+    [data-nav-link]:after {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,261 @@
+---
+// src/pages/404.astro
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/ui/Button.astro';
+
+// Metadatos SEO
+const title = 'Página no encontrada | SEO para Joyerías';
+const description = 'La página que estás buscando no existe o ha sido movida. Descubre cómo podemos ayudarte a mejorar el SEO de tu joyería.';
+---
+
+<Layout 
+  title={title}
+  description={description}
+  noIndex={true}
+  noFollow={true}
+>
+  <div class="min-h-[calc(100vh-16rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl w-full space-y-8 text-center">
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+        </div>
+        <div class="relative flex justify-center">
+          <span class="px-4 bg-white dark:bg-gray-900 text-6xl font-extrabold text-gray-900 dark:text-white">
+            404
+          </span>
+        </div>
+      </div>
+      
+      <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl">
+        Página no encontrada
+      </h1>
+      
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-300">
+        Lo sentimos, no pudimos encontrar la página que estás buscando.
+      </p>
+      
+      <div class="mt-10 bg-blue-50 dark:bg-blue-900/30 p-6 rounded-lg border border-blue-100 dark:border-blue-800">
+        <h2 class="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-4">¿Te has perdido?</h2>
+        <p class="text-gray-700 dark:text-gray-300">
+          No te preocupes, aquí tienes algunas opciones para volver al buen camino:
+        </p>
+        
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="font-medium text-gray-900 dark:text-white">Volver al inicio</h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              Regresa a nuestra página principal y explora nuestros servicios de SEO para joyerías.
+            </p>
+            <div class="mt-4">
+              <Button 
+                href="/" 
+                variant="primary"
+                class="w-full"
+              >
+                Ir al inicio
+              </Button>
+            </div>
+          </div>
+          
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="font-medium text-gray-900 dark:text-white">Contacta con nosotros</h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              ¿Necesitas ayuda? Nuestro equipo está listo para responder a tus preguntas.
+            </p>
+            <div class="mt-4">
+              <Button 
+                href="/#contacto" 
+                variant="outline"
+                class="w-full"
+              >
+                Contactar ahora
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white">¿Buscas algo en particular?</h3>
+        <p class="mt-2 text-base text-gray-600 dark:text-gray-300">
+          Prueba con estos enlaces útiles:
+        </p>
+        
+        <div class="mt-4 flex flex-wrap justify-center gap-4">
+          <a href="/#servicios" class="text-primary hover:text-primary/80 font-medium">Nuestros Servicios</a>
+          <span class="text-gray-400">•</span>
+          <a href="/#testimonios" class="text-primary hover:text-primary/80 font-medium">Testimonios</a>
+          <span class="text-gray-400">•</span>
+          <a href="/blog" class="text-primary hover:text-primary/80 font-medium">Blog</a>
+          <span class="text-gray-400">•</span>
+          <a href="/contacto" class="text-primary hover:text-primary/80 font-medium">Contacto</a>
+        </div>
+      </div>
+      
+      <div class="mt-8">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Si crees que esto es un error, por favor 
+          <a href="mailto:soporte@tudominio.com" class="text-primary hover:text-primary/80 font-medium">
+            contáctanos
+          </a>.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Script para mejorar la experiencia de usuario
+    document.addEventListener('DOMContentLoaded', () => {
+      // Añadir clase al body para estilos específicos de la página 404
+      document.body.classList.add('error-404');
+      
+      // Registrar el error 404 en analytics si está disponible
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+          page_title: '404 - Página no encontrada',
+          page_location: window.location.href,
+          page_path: window.location.pathname,
+          send_to: 'TU-ID-DE-ANALYTICS'
+        });
+      }
+      
+      // Mejorar la accesibilidad del foco
+      const mainContent = document.querySelector('main');
+      if (mainContent) {
+        mainContent.setAttribute('tabindex', '-1');
+        mainContent.focus();
+      }
+    });
+  </script>
+</Layout>
+
+<style>
+  /* Animación de entrada */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Aplicar animación al contenido principal */
+  .error-404 main {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  /* Estilos para el número 404 */
+  .error-404 h1 {
+    font-size: 6rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 1rem 0;
+  }
+  
+  /* Mejoras de contraste para accesibilidad */
+  .error-404 a:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+  
+  /* Estilos para modo oscuro */
+  @media (prefers-color-scheme: dark) {
+    .error-404 {
+      background-color: #111827;
+      color: #f3f4f6;
+    }
+    
+    .error-404 .bg-blue-50 {
+      background-color: rgba(30, 58, 138, 0.2);
+    }
+    
+    .error-404 .border-blue-100 {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    
+    .error-404 .bg-white {
+      background-color: #1f2937;
+      border-color: #374151;
+    }
+    
+    .error-404 .text-gray-900 {
+      color: #f9fafb;
+    }
+    
+    .error-404 .text-gray-700 {
+      color: #e5e7eb;
+    }
+    
+    .error-404 .text-gray-600 {
+      color: #d1d5db;
+    }
+  }
+  
+  /* Estilos para impresión */
+  @media print {
+    .error-404 {
+      text-align: center;
+    }
+    
+    .error-404 .bg-blue-50 {
+      background-color: transparent !important;
+      border: 1px solid #000;
+    }
+    
+    .error-404 .bg-white {
+      background-color: transparent !important;
+      border: 1px solid #000 !important;
+    }
+    
+    .error-404 a::after {
+      content: " (" attr(href) ")";
+      font-size: 0.8em;
+      font-weight: normal;
+    }
+    
+    .error-404 button, 
+    .error-404 .btn {
+      display: none;
+    }
+  }
+  
+  /* Mejoras para dispositivos móviles */
+  @media (max-width: 640px) {
+    .error-404 h1 {
+      font-size: 4rem;
+    }
+    
+    .error-404 .grid-cols-2 {
+      grid-template-columns: 1fr;
+    }
+    
+    .error-404 .flex-wrap span {
+      display: none;
+    }
+    
+    .error-404 .flex-wrap a {
+      display: block;
+      margin: 0.5rem 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
+  /* Efecto de hover para las tarjetas */
+  .hover-card {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilos para el foco visible */
+  *:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+</style>

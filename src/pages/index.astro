@@ -1,0 +1,310 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/landing/HeroSection.astro';
+import ProblemSection from '../components/landing/ProblemSection.astro';
+import SolutionSection from '../components/landing/SolutionSection.astro';
+import SocialProof from '../components/landing/SocialProof.astro';
+import GuaranteeBanner from '../components/landing/GuaranteeBanner.astro';
+import CtaSection from '../components/landing/CtaSection.astro';
+
+// Metadatos SEO
+const title = 'SEO para Joyerías | Aumente sus Ventas en Línea';
+const description = 'Especialistas en SEO para joyerías. Aumente su visibilidad en Google y atraiga más clientes a su joyería con nuestra estrategia probada.';
+const canonicalUrl = 'https://tudominio.com';
+---
+
+<Layout 
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+>
+  <!-- Sección Hero -->
+  <HeroSection />
+  
+  <!-- Sección de Problemas -->
+  <ProblemSection />
+  
+  <!-- Sección de Solución -->
+  <SolutionSection />
+  
+  <!-- Testimonios -->
+  <SocialProof />
+  
+  <!-- Garantías -->
+  <GuaranteeBanner />
+  
+  <!-- Llamada a la acción final -->
+  <CtaSection />
+</Layout>
+
+<script>
+  // Scripts globales que necesitan ejecutarse en todas las páginas
+  document.addEventListener('DOMContentLoaded', () => {
+    // Suavizar el desplazamiento para los enlaces internos
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          // Obtener la posición del header para el offset
+          const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+          const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+          
+          // Desplazamiento suave
+          window.scrollTo({
+            top: elementPosition,
+            behavior: 'smooth'
+          });
+          
+          // Actualizar la URL sin recargar la página
+          history.pushState(null, '', targetId);
+        }
+      });
+    });
+    
+    // Manejar el botón de volver arriba
+    const backToTopButton = document.getElementById('back-to-top');
+    if (backToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.remove('opacity-0', 'invisible');
+          backToTopButton.classList.add('opacity-100', 'visible');
+        } else {
+          backToTopButton.classList.remove('opacity-100', 'visible');
+          backToTopButton.classList.add('opacity-0', 'invisible');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Inicializar tooltips
+    const tooltipTriggers = document.querySelectorAll('[data-tooltip]');
+    tooltipTriggers.forEach(trigger => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip hidden absolute z-50 w-max max-w-xs p-2 text-sm text-white bg-gray-900 rounded shadow-lg';
+      tooltip.textContent = trigger.getAttribute('data-tooltip');
+      document.body.appendChild(tooltip);
+      
+      const updateTooltipPosition = (e) => {
+        const rect = trigger.getBoundingClientRect();
+        tooltip.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (tooltip.offsetWidth / 2)}px`;
+        tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 10}px`;
+      };
+      
+      trigger.addEventListener('mouseenter', (e) => {
+        tooltip.classList.remove('hidden');
+        updateTooltipPosition(e);
+      });
+      
+      trigger.addEventListener('mouseleave', () => {
+        tooltip.classList.add('hidden');
+      });
+      
+      trigger.addEventListener('mousemove', updateTooltipPosition);
+      
+      // Para accesibilidad con teclado
+      trigger.addEventListener('focus', (e) => {
+        tooltip.classList.remove('hidden');
+        updateTooltipPosition(e);
+      });
+      
+      trigger.addEventListener('blur', () => {
+        tooltip.classList.add('hidden');
+      });
+    });
+  });
+  
+  // Cargar scripts de terceros de forma asíncrona
+  function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.defer = true;
+    if (callback) script.onload = callback;
+    document.head.appendChild(script);
+  }
+  
+  // Cargar Google Analytics
+  if (typeof window !== 'undefined') {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'TU-ID-DE-SEGUIMIENTO');
+    
+    loadScript('https://www.googletagmanager.com/gtag/js?id=TU-ID-DE-SEGUIMIENTO');
+  }
+</script>
+
+<style>
+  /* Estilos globales adicionales */
+  :root {
+    --color-primary: #2563eb; /* Azul-600 */
+    --color-primary-light: #3b82f6; /* Azul-500 */
+    --color-primary-dark: #1d4ed8; /* Azul-700 */
+    --color-secondary: #7c3aed; /* Violet-600 */
+    --color-accent: #10b981; /* Emerald-500 */
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  /* Estilos para el botón de volver arriba */
+  #back-to-top {
+    transition: all 0.3s ease;
+  }
+  
+  #back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Mejoras de accesibilidad */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  /* Estilos para el foco accesible */
+  *:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  button:focus, a:focus, [tabindex="0"]:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  /* Mejoras de rendimiento */
+  * {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Estilos para impresión */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    body {
+      font-size: 12pt;
+      line-height: 1.3;
+    }
+    
+    a[href^="http"]::after {
+      content: " (" attr(href) ")";
+      font-size: 0.8em;
+      font-weight: normal;
+    }
+  }
+  
+  /* Ajustes para modo oscuro */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: #3b82f6; /* Azul-500 */
+      --color-primary-light: #60a5fa; /* Azul-400 */
+      --color-primary-dark: #2563eb; /* Azul-600 */
+    }
+    
+    body {
+      background-color: #111827; /* Gris-900 */
+      color: #f3f4f6; /* Gris-100 */
+    }
+  }
+  
+  /* Estilos para el pre-cargador */
+  #preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+  }
+  
+  #preloader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<!-- Pre-cargador -->
+<div id="preloader">
+  <div class="spinner"></div>
+</div>
+
+<!-- Botón de volver arriba -->
+<button 
+  id="back-to-top" 
+  class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+  aria-label="Volver arriba"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+  </svg>
+</button>
+
+<script>
+  // Ocultar el pre-cargador cuando la página haya cargado
+  window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+      preloader.classList.add('fade-out');
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 500);
+    }
+    
+    // Forzar el repintado para activar las animaciones
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      document.body.style.overflow = '';
+    }, 100);
+  });
+</script>

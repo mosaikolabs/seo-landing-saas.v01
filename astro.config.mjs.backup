@@ -1,0 +1,182 @@
+import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
+import compress from 'astro-compress';
+
+// Configuración de producción
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Configuración base para el despliegue
+const base = '/saas-para-joyerias';
+const siteUrl = 'https://internationalpathfinders.com';
+
+// https://astro.build/config
+export default defineConfig({
+  // Configuración del sitio para generación de URLs
+  site: siteUrl,
+  
+  // Configuración de la ruta base
+  base: base,
+  
+  // Configuración de salida
+  output: 'static',
+  
+  // Configuración del servidor de desarrollo
+  server: {
+    port: 3000,
+    host: true,
+    open: true,
+    headers: isProduction ? {
+      'X-Frame-Options': 'DENY',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+      'X-XSS-Protection': '1; mode=block',
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+    } : {},
+  },
+  
+  // Configuración de compilación
+  build: {
+    // Generar sitemap en la raíz
+    sitemap: true,
+    // Generar sourcemaps en desarrollo
+    sourcemap: !isProduction,
+    // Minificar HTML
+    minify: isProduction,
+    // Generar rutas con trailing slash
+    trailingSlash: 'always',
+    // Configuración de formato de salida
+    format: 'directory',
+  },
+  
+  // Integraciones
+  integrations: [
+    tailwind({
+      // Configuración de Tailwind para producción
+      config: {
+        mode: isProduction ? 'jit' : undefined,
+        purge: isProduction ? {
+          enabled: true,
+          content: ['./src/**/*.{astro,html,js,jsx,ts,tsx,vue}'],
+        } : undefined,
+        // Asegurar que las clases de Tailwind funcionen con la ruta base
+        prefix: '',
+        important: false,
+      },
+    }),
+    sitemap({
+      // Configuración del sitemap para la ruta base
+      site: siteUrl,
+      // Personalizar la generación del sitemap
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+      // Excluir páginas que no deben estar en el sitemap
+      filter: (page) => !page.includes('/admin/') && !page.includes('/404'),
+      // Configuración adicional
+      customPages: [
+        { url: `${base}/`, priority: 1.0, changefreq: 'daily' },
+        { url: `${base}/servicios`, priority: 0.9, changefreq: 'weekly' },
+        { url: `${base}/contacto`, priority: 0.8, changefreq: 'monthly' },
+      ],
+      // Asegurar que las URLs incluyan la ruta base
+      entryNormalizer: (entry) => {
+        if (entry.url && !entry.url.startsWith(base)) {
+          entry.url = `${base}${entry.url.startsWith('/') ? '' : '/'}${entry.url}`;
+        }
+        return entry;
+      },
+    }),
+    // Comprimir recursos estáticos
+    isProduction ? compress({
+      css: true,
+      html: true,
+      img: true,
+      js: true,
+      svg: true,
+      logger: 2, // Muestra logs detallados
+    }) : null,
+  ].filter(Boolean), // Filtra integraciones nulas en desarrollo
+  
+  // Configuración de Markdown
+  markdown: {
+    // Habilitar sintaxis de GitHub Flavored Markdown
+    gfm: true,
+    // Resaltado de sintaxis
+    syntaxHighlight: 'shiki',
+    // Configuración de Shiki (tema para el resaltado de código)
+    shikiConfig: {
+      theme: 'github-dark',
+      wrap: true,
+    },
+    // Configuración de rehype/remark
+    rehypePlugins: [],
+    remarkPlugins: [],
+    // Extensión por defecto para archivos Markdown
+    extendDefaultPlugins: false,
+  },
+  
+  // Configuración de Vite
+  vite: {
+    // Configuración específica para producción
+    mode: isProduction ? 'production' : 'development',
+    // Definición de variables de entorno
+    define: {
+      __VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
+    },
+    // Configuración de build
+    build: {
+      // Generar assets con hashes para cache busting
+      assetsInlineLimit: 0,
+      // Minificar CSS
+      cssMinify: isProduction,
+      // Minificar JS
+      minify: isProduction ? 'esbuild' : false,
+      // Generar sourcemaps en desarrollo
+      sourcemap: !isProduction,
+      // Configuración de rollup
+      rollupOptions: {
+        output: {
+          // Generar nombres de archivo legibles en desarrollo, cortos en producción
+          entryFileNames: isProduction ? 'assets/[hash].js' : 'assets/[name].[hash].js',
+          chunkFileNames: isProduction ? 'assets/[hash].js' : 'assets/[name].[hash].js',
+          assetFileNames: isProduction ? 'assets/[hash][extname]' : 'assets/[name].[hash][extname]',
+        },
+      },
+    },
+    // Optimizaciones para producción
+    optimizeDeps: {
+      include: ['@astrojs/mdx', '@astrojs/markdown-remark'],
+    },
+    // Configuración de servidor
+    server: {
+      // Configuración de HMR (Hot Module Replacement)
+      hmr: !isProduction && {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 3000,
+      },
+      // Configuración de middleware
+      middlewareMode: 'ssr',
+      // Configuración de CORS
+      cors: true,
+      // Configuración de compresión
+      compress: isProduction,
+    },
+  },
+  
+  // Configuración de redirecciones
+  redirects: {
+    // Redirecciones permanentes (301)
+    '/old-url': '/new-url',
+    // Redirecciones temporales (302)
+    '/temporary': { status: 302, destination: '/new-location' },
+  },
+  
+  // Configuración de internacionalización (i18n)
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en', 'fr']
+  }
+});
